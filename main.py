@@ -27,10 +27,6 @@ class ExcelLikeApp(QWidget):
         self.change_colour_button.clicked.connect(self.change_colour)
         self.layout_.addWidget(self.change_colour_button)
 
-        self.paste_button = QPushButton("Paste Cells")
-        self.paste_button.clicked.connect(self.paste_cells)
-        self.layout_.addWidget(self.paste_button)
-
         self.copy_cells_button = QPushButton("Copy Data")
         self.copy_cells_button.clicked.connect(self.copy_cells_info)
         self.layout_.addWidget(self.copy_cells_button)
@@ -38,6 +34,15 @@ class ExcelLikeApp(QWidget):
         self.cut_cells_button = QPushButton("Cut Data")
         self.cut_cells_button.clicked.connect(self.cut_cells_info)
         self.layout_.addWidget(self.cut_cells_button)
+
+        self.paste_button = QPushButton("Paste Cells")
+        self.paste_button.clicked.connect(self.paste_cells)
+        self.layout_.addWidget(self.paste_button)
+
+        self.fill_cells_button = QPushButton("Fill Cells")
+        self.fill_cells_button.clicked.connect(self.fill_cells)
+        self.layout_.addWidget(self.fill_cells_button)
+
 
         # Cell editor
         self.cell_data = QTextEdit(self, plainText="", acceptRichText=False, readOnly=False)
@@ -186,6 +191,15 @@ class ExcelLikeApp(QWidget):
             row, col = cell.row(), cell.column()
             self.set_item(row, col, "")
 
+    def fill_cells(self) -> None:
+        """Fills cells that track down or to the sides"""
+        cells = self.table.selectionModel().selectedIndexes()
+        if len(cells) < 2:
+            return
+        row, col = cells[0].row(), cells[0].column()
+        dir_row, dir_col = (cells[1].row() - cells[0].row(), cells[1].column() - cells[0].column())
+        pipeline_idx = self.data_table[row][col].base_text.find("|")
+        pipeline_idx
 
 
 if __name__ == '__main__':
